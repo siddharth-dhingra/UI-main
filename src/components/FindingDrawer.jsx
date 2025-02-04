@@ -85,7 +85,6 @@ function FindingDrawer({
           </Tag>
         </Descriptions.Item>
 
-        {/* STATUS */}
         <Descriptions.Item label="Status">
           <Tag
             style={{
