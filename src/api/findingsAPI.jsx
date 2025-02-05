@@ -44,3 +44,18 @@ export async function initiateScan({selectedTools}) {
 
     return response.data;
 }
+
+export async function updateAlert({ owner, repo, toolType, alertNumber, newState, reason }) {
+  const body = {
+    owner,
+    repo,
+    toolType,
+    alertNumber,
+    newState,
+    reason,
+  };
+
+  const response = await axios.post('http://localhost:8083/alerts/update', body);
+  console.log(body);
+  return response.data;
+}
