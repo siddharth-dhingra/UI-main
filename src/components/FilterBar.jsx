@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Row, Col, Select, Button, Typography } from 'antd';
+import { Row, Col, Select, Typography } from 'antd';
 
 const { Text } = Typography;
 
@@ -13,7 +13,6 @@ function FilterBar({
   onToolTypesChange,
   onSeveritiesChange,
   onStatusesChange,
-  onApplyFilter
 }) {
   return (
     <Row justify="center" gutter={[16, 16]} style={{ marginBottom: 16 }}>
@@ -68,11 +67,11 @@ function FilterBar({
           ))}
         </Select>
       </Col>
-      <Col>
+      {/* <Col>
         <Button type="primary" onClick={onApplyFilter}>
           Apply Filter
         </Button>
-      </Col>
+      </Col> */}
     </Row>
   );
 }

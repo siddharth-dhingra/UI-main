@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
+// src/components/AppHeader.jsx
+import { useState, useEffect, useContext } from 'react';
 import { Layout, Button, message, Select } from 'antd';
-
-import { fetchFilterData, initiateScan } from '../api/findingsAPI'; // Adjust path to your 'findingsAPI.js'
+import { UserContext } from '../context/UserContext';
+import { fetchFilterData, initiateScan } from '../api/findingsAPI';
 
 const { Header } = Layout;
 const { Option } = Select;
 
 function AppHeader() {
-  // State to store fetched tool types
+  const { user, loading, logout } = useContext(UserContext);
   const [toolOptions, setToolOptions] = useState([]);
-  // State for user-selected tools
   const [selectedTools, setSelectedTools] = useState([]);
 
-  // Load tool types on mount
+  // Load tool types on mount (used in the multi-select filter)
   useEffect(() => {
     const loadToolTypes = async () => {
       try {
-        // fetchFilterData returns { toolTypes, severities, statuses }
+        // fetchFilterData returns an object like: { toolTypes, severities, statuses }
         const { toolTypes } = await fetchFilterData();
         setToolOptions(toolTypes || []);
       } catch (error) {
@@ -34,35 +34,68 @@ function AppHeader() {
 
   const handleScanClick = async () => {
     try {
-        const respMsg = await initiateScan({selectedTools});
-        message.success(respMsg || 'Scan event sent successfully.');
+      const respMsg = await initiateScan({ selectedTools });
+      message.success(respMsg || 'Scan event sent successfully.');
     } catch (error) {
-        console.error('Error initiating scan:', error);
-        message.error('Failed to initiate scan.');
+      console.error('Error initiating scan:', error);
+      message.error('Failed to initiate scan.');
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();  // logout method from UserContext should call your backend /logout endpoint.
+      message.success("Logged out successfully.");
+      window.location.href = "http://localhost:5173/login";
+    } catch (error) {
+      console.error("Logout failed", error);
+      message.error("Logout failed.");
+    }
+  };
+
+
+  if (loading) {
+    return (
+      <Header style={{ background: '#fff', display: 'flex', justifyContent: 'flex-end', padding: '0 24px' }}>
+        Loading...
+      </Header>
+    );
+  }
+
   return (
     <Header style={{ background: '#fff', display: 'flex', justifyContent: 'flex-end', padding: '0 24px' }}>
-      {/* Multi-select for tool types fetched from the server */}
-      <Select
-        mode="multiple"
-        style={{ width: 200, marginRight: 16, alignSelf: 'center' }}
-        placeholder="Select tools"
-        value={selectedTools}
-        onChange={handleToolChange}
-      >
-        {toolOptions.map((tool) => (
-          <Option key={tool} value={tool}>
-            {tool}
-          </Option>
-        ))}
-      </Select>
-
-      {/* Scan button */}
-      <Button type="primary" onClick={handleScanClick} style={{ margin: '16px 0' }}>
-        Scan
-      </Button>
+      {user && (
+        <>
+          <span style={{ marginRight: 16, alignSelf: 'center' }}>
+            Hello, {user.email}
+          </span>
+          {(user.role === 'SUPER_ADMIN' || user.role === 'ADMIN') && (
+            <>
+              <Select
+                mode="multiple"
+                style={{ width: 200, marginRight: 16, alignSelf: 'center' }}
+                placeholder="Select tools"
+                value={selectedTools}
+                onChange={handleToolChange}
+              >
+                {toolOptions.map((tool) => (
+                  <Option key={tool} value={tool}>
+                    {tool}
+                  </Option>
+                ))}
+              </Select>
+              <Button type="primary" onClick={handleScanClick} style={{ margin: '16px 0' }}>
+                Scan
+              </Button>
+            </>
+          )}
+          <>
+            <Button type="default" onClick={handleLogout} style={{ margin: '16px 15px', height:32 }}>
+              Logout
+            </Button>
+          </>
+        </>
+      )}
     </Header>
   );
 }

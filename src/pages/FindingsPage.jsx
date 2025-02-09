@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Row, Col, Typography, Pagination, message } from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 import FilterBar from '../components/FilterBar';
 import FindingsTable from '../components/FindingsTable';
 import FindingDrawer from '../components/FindingDrawer';
 import AlertUpdateDrawer from '../components/AlertUpdateDrawer';
 
-import {
-  fetchFilterData,
-  fetchFindingsAPI,
-} from '../api/findingsAPI';
+import { fetchFilterData, fetchFindingsAPI } from '../api/findingsAPI';
+import { UserContext } from '../context/UserContext';
 
 const { Title } = Typography;
 
@@ -39,17 +38,51 @@ function FindingsPage() {
 
   // "View More" logic for Dependabot
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
-  const [suggestionExpanded, setsuggestionExpanded] = useState(false);
+  const [suggestionExpanded, setSuggestionExpanded] = useState(false);
 
   // Drawer state for "Edit"
   const [updateDrawerVisible, setUpdateDrawerVisible] = useState(false);
   const [editFinding, setEditFinding] = useState(null);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get the current user from context
+  const { user } = useContext(UserContext);
+  // Only SUPER_ADMIN can edit
+  const canEdit = user && user.role === 'SUPER_ADMIN';
+  console.log(canEdit)
 
   useEffect(() => {
     loadFilterData();
     loadFindings(1);
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    const toolTypesParam = searchParams.getAll('toolType'); // e.g. ?toolType=CODESCAN&toolType=DEPENDABOT
+    const severitiesParam = searchParams.getAll('severity');
+    const statusesParam = searchParams.getAll('status');
+
+    setSelectedToolTypes(toolTypesParam);
+    setSelectedSeverities(severitiesParam);
+    setSelectedStatuses(statusesParam);
+  }, [searchParams]);
+
+  useEffect(() => {
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      // Remove old filter parameters so we don't accumulate duplicates
+      newParams.delete('toolType');
+      newParams.delete('severity');
+      newParams.delete('status');
+      // Append the new filter values
+      selectedToolTypes.forEach((tool) => newParams.append('toolType', tool));
+      selectedSeverities.forEach((sev) => newParams.append('severity', sev));
+      selectedStatuses.forEach((status) => newParams.append('status', status));
+      return newParams;
+    });
+    loadFindings();
+  }, [selectedToolTypes, selectedSeverities, selectedStatuses]);
 
   // Fetch filter lists
   const loadFilterData = async () => {
@@ -79,7 +112,7 @@ function FindingsPage() {
       });
 
       setFindings(data.items);
-      setTotalItems(data.totalItems)
+      setTotalItems(data.totalItems);
       setPage(finalPage);
     } catch (error) {
       console.error('Error fetching findings:', error);
@@ -87,30 +120,39 @@ function FindingsPage() {
     }
   };
 
-  // Handle "Apply Filter"
-  const handleApplyFilter = () => {
-    loadFindings(1);
-  };
-
-  // Handle "Scan" button
-  // const handleScanClick = async () => {
-  //   try {
-  //     const respMsg = await initiateScan();
-  //     message.success(respMsg || 'Scan event sent successfully.');
-  //   } catch (error) {
-  //     console.error('Error initiating scan:', error);
-  //     message.error('Failed to initiate scan.');
-  //   }
-  // };
-
-  // Row click => show drawer
+  // Row click => show drawer and add findingId to URL
   const onRowClick = (record) => {
     setSelectedFinding(record);
     setDrawerVisible(true);
     setDescriptionExpanded(false);
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      newParams.set('findingId', record.id);
+      return newParams;
+    });
   };
 
-  // "Edit" click => open "Edit" drawer
+  function onDrawerClose() {
+    setDrawerVisible(false);
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      newParams.delete('findingId');
+      return newParams;
+    });
+  }
+
+  useEffect(() => {
+    const fid = searchParams.get('findingId');
+    if (fid && findings.length > 0) {
+      const found = findings.find(f => f.id === fid);
+      if (found) {
+        setSelectedFinding(found);
+        setDrawerVisible(true);
+      }
+    }
+  }, [findings, searchParams]);
+
+  // "Edit" click => open "Edit" drawer (only if user can edit)
   const onEditClick = (record) => {
     setEditFinding(record);
     setUpdateDrawerVisible(true);
@@ -118,32 +160,23 @@ function FindingsPage() {
 
   // When user finishes editing, refresh table
   const handleEditSuccess = () => {
-    // Option 1: Reload from server
     loadFindings(page, size);
-    // Option 2: You could do local state update if you want, but re-fetch ensures accuracy
   };
 
   // Pagination
-  // const totalItems = hasNextPage ? page * size + 1 : page * size;
-  // console.log(totalItems)
   const handlePaginationChange = (pageNumber) => {
     loadFindings(pageNumber);
   };
 
   return (
     <div>
-      {/* Top row: Title + Scan Button */}
+      {/* Top row: Title */}
       <Row justify="space-between" align="middle" style={{ marginBottom: 20 }}>
         <Col>
           <Title level={3} style={{ margin: 0 }}>
             Findings
           </Title>
         </Col>
-        {/* <Col>
-          <Button type="primary" onClick={handleScanClick}>
-            Scan
-          </Button>
-        </Col> */}
       </Row>
 
       {/* Filter bar */}
@@ -157,14 +190,14 @@ function FindingsPage() {
         onToolTypesChange={setSelectedToolTypes}
         onSeveritiesChange={setSelectedSeverities}
         onStatusesChange={setSelectedStatuses}
-        onApplyFilter={handleApplyFilter}
       />
 
       {/* Findings table */}
       <FindingsTable
         findings={findings}
         onRowClick={onRowClick}
-        onEditClick={onEditClick}
+        onEditClick={canEdit ? onEditClick : undefined} 
+        canEdit={canEdit}
       />
 
       {/* Pagination */}
@@ -176,35 +209,33 @@ function FindingsPage() {
           showLessItems={false}
           hideOnSinglePage={false}
           onChange={handlePaginationChange}
-          // showSizeChanger={false}
           showSizeChanger
-          // Called when user picks a new "items per page"
           onShowSizeChange={(currentPage, newSize) => {
-            setPage(1);         // typically reset to the first page
-            setSize(newSize);   // update local page-size state
+            setPage(1);
+            setSize(newSize);
             loadFindings(1, newSize);
           }}
         />
       </Row>
 
-      {/* Drawer */}
+      {/* Drawer for viewing */}
       <FindingDrawer
         visible={drawerVisible}
-        onClose={() => setDrawerVisible(false)}
+        onClose={onDrawerClose}
         selectedFinding={selectedFinding}
         descriptionExpanded={descriptionExpanded}
         setDescriptionExpanded={setDescriptionExpanded}
         suggestionExpanded={suggestionExpanded}
-        setSuggestionExpanded={setsuggestionExpanded}
+        setSuggestionExpanded={setSuggestionExpanded}
       />
 
       {/* EDIT Drawer */}
-      <AlertUpdateDrawer
+      {canEdit && <AlertUpdateDrawer
         visible={updateDrawerVisible}
         onClose={() => setUpdateDrawerVisible(false)}
         finding={editFinding}
         onSuccess={handleEditSuccess}
-      />
+      />}
     </div>
   );
 }

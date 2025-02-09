@@ -5,29 +5,46 @@ import AppHeader from './components/AppHeader'
 import DashboardPage from './pages/DashboardPage';
 import FindingsPage from './pages/FindingsPage';
 import SettingsPage from './pages/SettingsPage';
+import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './routes/ProtectedRoute';
 
 const { Content } = Layout;
+
+function MainLayout() {
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sidebar />
+      <Layout>
+        <AppHeader />
+        <Content style={{ margin: '24px', background: '#fff', padding: '24px' }}>
+          <Routes>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/findings" element={<FindingsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
+        </Content>
+      </Layout>
+    </Layout>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <Layout style={{ minHeight: '100vh' }}>
-        <Sidebar />
+      <Routes>
+        {/* The login route does NOT use your main layout. */}
+        <Route path="/login" element={<LoginPage />} />
 
-        <Layout>
-          {/* Header with Scan Button */}
-          <AppHeader />
-
-          {/* Main Content Area */}
-          <Content style={{ margin: '24px', background: '#fff', padding: '24px' }}>
-            <Routes>
-              <Route path="/" element={<DashboardPage />} />
-              <Route path="/findings" element={<FindingsPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-            </Routes>
-          </Content>
-        </Layout>
-      </Layout>
+        {/* All other routes use your main layout */}
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </Router>
   );
 }

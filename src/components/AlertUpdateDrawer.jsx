@@ -165,14 +165,14 @@ function AlertUpdateDrawer({ visible, onClose, finding, onSuccess }) {
       const tool = finding.toolType.toLowerCase();
       try {
         // Fetch possible states for this tool type.
-        const statesRes = await axios.get(`http://localhost:8083/reference/${tool}/states`);
+        const statesRes = await axios.get(`http://localhost:8083/reference/${tool}/states`,{withCredentials: 'true',});
         setPossibleStates(statesRes.data);
         // For SecretScan, fetch resolutions; for others, fetch dismissed reasons.
         if (tool === 'secretscan') {
-          const reasonsRes = await axios.get(`http://localhost:8083/reference/${tool}/resolutions`);
+          const reasonsRes = await axios.get(`http://localhost:8083/reference/${tool}/resolutions`,{withCredentials: 'true',});
           setPossibleReasons(reasonsRes.data);
         } else {
-          const reasonsRes = await axios.get(`http://localhost:8083/reference/${tool}/dismissedReasons`);
+          const reasonsRes = await axios.get(`http://localhost:8083/reference/${tool}/dismissedReasons`,{withCredentials: 'true',});
           setPossibleReasons(reasonsRes.data);
         }
       } catch (error) {
