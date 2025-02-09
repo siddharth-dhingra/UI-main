@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useContext } from 'react';
 import { Row, Col, Typography, Pagination, message } from 'antd';
 import { useSearchParams } from 'react-router-dom';
@@ -29,7 +30,6 @@ function FindingsPage() {
 
   // Pagination
   const [page, setPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
   const [size, setSize] = useState(10);
 
   // Drawer state
@@ -55,7 +55,6 @@ function FindingsPage() {
   useEffect(() => {
     loadFilterData();
     loadFindings(1);
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
