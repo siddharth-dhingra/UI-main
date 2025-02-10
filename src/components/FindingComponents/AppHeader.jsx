@@ -1,8 +1,8 @@
 // src/components/AppHeader.jsx
 import { useState, useEffect, useContext } from 'react';
 import { Layout, Button, message, Select } from 'antd';
-import { UserContext } from '../context/UserContext';
-import { fetchFilterData, initiateScan } from '../api/findingsAPI';
+import { UserContext } from '../../context/UserContext';
+import { fetchFilterData, initiateScan } from '../../api/findingsAPI';
 
 const { Header } = Layout;
 const { Option } = Select;

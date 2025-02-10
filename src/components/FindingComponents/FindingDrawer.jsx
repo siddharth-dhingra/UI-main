@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Drawer, Button, Typography, Descriptions, Tag } from 'antd';
-import { getColorForValue } from '../utils/colorUtils';
+import { getColorForValue } from '../../utils/colorUtils';
 
 const { Paragraph } = Typography;
 

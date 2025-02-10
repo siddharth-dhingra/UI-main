@@ -7,8 +7,8 @@ import {
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import armorcodeImg from '../assets/armorcode_logo.png';
-import armorcodeImgCollapsed from '../assets/armorcode_logo_collapsed.png';
+import armorcodeImg from '../../assets/armorcode_logo.png';
+import armorcodeImgCollapsed from '../../assets/armorcode_logo_collapsed.png';
 
 const { Sider } = Layout;
 

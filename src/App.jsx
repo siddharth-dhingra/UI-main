@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from 'antd';
-import Sidebar from './components/SideBar';
-import AppHeader from './components/AppHeader'
+import Sidebar from './components/FindingComponents/SideBar';
+import AppHeader from './components/FindingComponents/AppHeader'
 import DashboardPage from './pages/DashboardPage';
 import FindingsPage from './pages/FindingsPage';
 import SettingsPage from './pages/SettingsPage';

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // /* eslint-disable react/prop-types */
 import { Table, Tag, Button } from 'antd';
-import { getColorForValue } from '../utils/colorUtils';
+import { getColorForValue } from '../../utils/colorUtils';
 
 function FindingsTable({ findings, onRowClick, onEditClick, canEdit }) {
   const baseColumns = [

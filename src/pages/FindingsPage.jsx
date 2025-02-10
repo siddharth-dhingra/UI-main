@@ -3,10 +3,10 @@ import { useEffect, useState, useContext } from 'react';
 import { Row, Col, Typography, Pagination, message } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 
-import FilterBar from '../components/FilterBar';
-import FindingsTable from '../components/FindingsTable';
-import FindingDrawer from '../components/FindingDrawer';
-import AlertUpdateDrawer from '../components/AlertUpdateDrawer';
+import FilterBar from '../components/FindingComponents/FilterBar';
+import FindingsTable from '../components/FindingComponents/FindingsTable';
+import FindingDrawer from '../components/FindingComponents/FindingDrawer';
+import AlertUpdateDrawer from '../components/FindingComponents/AlertUpdateDrawer';
 
 import { fetchFilterData, fetchFindingsAPI } from '../api/findingsAPI';
 import { UserContext } from '../context/UserContext';

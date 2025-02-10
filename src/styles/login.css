@@ -1,0 +1,327 @@
+/* Container
+.container {
+    display: flex;
+    height: 100vh;
+    font-family: sans-serif;
+  }
+  
+  .left-pane {
+    position: relative;
+    flex: 0.35;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logo-top-left {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 200px;
+    height: auto;
+  }
+  
+  .left-content {
+    max-width: 360px;
+    text-align: center;
+  }
+  
+  .title {
+    margin-bottom: 8px;
+    font-size: 32px;
+  }
+  
+  .subtitle {
+    margin-bottom: 24px;
+    color: #555;
+  }
+  
+  .google-button {
+    cursor: pointer;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .google-button-hover {
+    background-color: #f0f0f0;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+  }
+  
+  .google-logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+  
+  .right-pane {
+    flex: 0.8;
+    background-color: #fafafa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .brand-content {
+    position: relative;
+    width: 900px;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .brand-logo {
+    width: 900px;
+    margin-bottom: 16px;
+    z-index: 2;
+  }
+    
+  .icon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    opacity: 0.5;
+    object-fit: contain;
+    z-index: 1;
+  }
+  
+  .icon-top-left {
+    top: -50px;
+    left: -100px;
+  }
+  
+  .icon-top-right {
+    top: -50px;
+    right: -100px;
+  }
+  
+  .icon-bottom-left {
+    bottom: -50px;
+    left: -100px;
+  }
+  
+  .icon-bottom-right {
+    bottom: -50px;
+    right: -100px;
+  }
+   */
+
+/* Base Styles */
+.container {
+    display: flex;
+    height: 100vh;
+    font-family: sans-serif;
+    flex-wrap: wrap; /* allow wrapping on smaller screens */
+  }
+  
+  .left-pane {
+    position: relative;
+    flex: 0.35;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+  }
+  
+  .logo-top-left {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 200px;
+    height: auto;
+  }
+  
+  .left-content {
+    max-width: 360px;
+    text-align: center;
+  }
+  
+  .title {
+    margin-bottom: 8px;
+    font-size: 32px;
+  }
+  
+  .subtitle {
+    margin-bottom: 24px;
+    color: #555;
+  }
+  
+  .google-button {
+    cursor: pointer;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .google-button-hover {
+    background-color: #f0f0f0;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+  }
+  
+  .google-logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+  
+  .right-pane {
+    flex: 0.8;
+    background-color: #fafafa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-width: 300px;
+  }
+  
+  .brand-content {
+    position: relative;
+    max-width: 900px;
+    width: 90%;
+    min-height: 650px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .brand-logo {
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 16px;
+    z-index: 2;
+  }
+  
+  .icon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    opacity: 0.5;
+    object-fit: contain;
+    z-index: 1;
+  }
+  
+  .icon-top-left {
+    top: -50px;
+    left: -100px;
+  }
+  
+  .icon-top-right {
+    top: -50px;
+    right: -100px;
+  }
+  
+  .icon-bottom-left {
+    bottom: -50px;
+    left: -100px;
+  }
+  
+  .icon-bottom-right {
+    bottom: -50px;
+    right: -100px;
+  }
+  
+  /* Media Queries for Responsiveness */
+  
+  /* For screens narrower than 1200px, adjust the brand content height */
+  @media (max-width: 1200px) {
+    .brand-content {
+      min-height: 550px;
+    }
+  }
+  
+  /* For screens narrower than 768px, stack the panes vertically */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      height: auto;
+    }
+    
+    .left-pane, .right-pane {
+      flex: none;
+      width: 100%;
+      height: auto;
+    }
+    
+    .logo-top-left {
+      position: static;
+      margin-bottom: 16px;
+      width: 150px;
+    }
+    
+    .brand-content {
+      min-height: 450px;
+    }
+    
+    .google-button {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .icon {
+    width: 40px;
+    height: 40px;
+    }
+  
+    .icon-top-left {
+        top: -30px;
+        left: -60px;
+    }
+    
+    .icon-top-right {
+        top: -30px;
+        right: -60px;
+    }
+    
+    .icon-bottom-left {
+        bottom: -30px;
+        left: -60px;
+    }
+    
+    .icon-bottom-right {
+        bottom: -30px;
+        right: -60px;
+    }
+
+    .icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .icon-top-left {
+        top: -30px;
+        left: -60px;
+    }
+    
+    .icon-top-right {
+        top: -30px;
+        right: -60px;
+    }
+    
+    .icon-bottom-left {
+        bottom: -30px;
+        left: -60px;
+    }
+    
+    .icon-bottom-right {
+        bottom: -30px;
+        right: -60px;
+    }
+  }
+  
