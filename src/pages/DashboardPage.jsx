@@ -14,6 +14,8 @@ import CvssLineChart from '../components/DashboardComponents/CvssLineChart';
 
 import { fetchToolCounts, fetchStateCounts, fetchSeverityCounts, fetchCvssHistogram } from '../api/dashobardAPI';
 import { fetchFilterData } from '../api/findingsAPI';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 import { fillMissingStates, fillMissingSeverities } from '../utils/chartUtils';
 
 const { Title } = Typography;
@@ -33,6 +35,8 @@ function DashboardPage() {
     severities: [],
     statuses: [],
   });
+
+  const { selectedTenantId } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -60,12 +64,12 @@ function DashboardPage() {
     if (filterData.statuses.length > 0 && filterData.severities.length > 0) {
       loadFilteredData(selectedTool);
     }
-  }, [selectedTool, filterData]);
+  }, [selectedTool, filterData, selectedTenantId]);
 
   async function loadToolCounts() {
     try {
       setLoading(true);
-      const data = await fetchToolCounts();
+      const data = await fetchToolCounts(selectedTenantId);
       const arr = Object.entries(data).map(([k, v]) => ({ name: k, value: v }));
       setToolData(arr);
       const colorMap = {};
@@ -85,9 +89,9 @@ function DashboardPage() {
     try {
       setLoading(true);
       const [rawStates, rawSeverities, rawCvss] = await Promise.all([
-        fetchStateCounts(tool),
-        fetchSeverityCounts(tool),
-        fetchCvssHistogram(tool),
+        fetchStateCounts(selectedTenantId, tool),
+        fetchSeverityCounts(selectedTenantId, tool),
+        fetchCvssHistogram(selectedTenantId,tool),
       ]);
       const filledStates = fillMissingStates(rawStates, filterData.statuses);
       const filledSeverities = fillMissingSeverities(rawSeverities, filterData.severities);

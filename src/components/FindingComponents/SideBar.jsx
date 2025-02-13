@@ -4,6 +4,7 @@ import {
   HomeOutlined,
   FileSearchOutlined,
   SettingOutlined,
+  ProfileOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -26,6 +27,8 @@ function Sidebar() {
       setSelectedKey(['2']);
     } else if (path.startsWith('/settings')) {
       setSelectedKey(['3']);
+    } else if (path.startsWith('/profile')) {
+      setSelectedKey(['4']);
     } else {
       setSelectedKey([]);
     }
@@ -38,6 +41,8 @@ function Sidebar() {
       navigate('/findings');
     } else if (e.key === '3') {
       navigate('/settings');
+    } else if (e.key === '4') {
+      navigate('/profile');
     }
   };
 
@@ -80,6 +85,9 @@ function Sidebar() {
         </Menu.Item>
         <Menu.Item key="3" icon={<SettingOutlined />}>
           Settings
+        </Menu.Item>
+        <Menu.Item key="4" icon={<ProfileOutlined />}>
+          Profile
         </Menu.Item>
       </Menu>
     </Sider>

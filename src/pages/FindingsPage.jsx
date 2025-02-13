@@ -47,7 +47,7 @@ function FindingsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Get the current user from context
-  const { user } = useContext(UserContext);
+  const { user, selectedTenantId } = useContext(UserContext);
   // Only SUPER_ADMIN can edit
   const canEdit = user && user.role === 'SUPER_ADMIN';
   console.log(canEdit)
@@ -81,7 +81,7 @@ function FindingsPage() {
       return newParams;
     });
     loadFindings();
-  }, [selectedToolTypes, selectedSeverities, selectedStatuses]);
+  }, [selectedToolTypes, selectedSeverities, selectedStatuses, selectedTenantId]);
 
   // Fetch filter lists
   const loadFilterData = async () => {
@@ -100,9 +100,10 @@ function FindingsPage() {
   const loadFindings = async (requestedPage, requestedSize) => {
     const finalPage = requestedPage || page;
     const finalSize = requestedSize || size;
-
+    console.log(selectedTenantId)
     try {
       const data = await fetchFindingsAPI({
+        tenantId: selectedTenantId,
         page: finalPage,
         size: finalSize,
         selectedToolTypes,

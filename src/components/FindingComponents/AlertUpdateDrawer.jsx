@@ -5,6 +5,8 @@ import { Drawer, Select, Button, Form, message } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { updateAlert } from '../../api/findingsAPI';
+import { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 
 const { Option } = Select;
 
@@ -14,6 +16,7 @@ function AlertUpdateDrawer({ visible, onClose, finding, onSuccess }) {
   const [reason, setReason] = useState('');
   const [possibleStates, setPossibleStates] = useState([]);
   const [possibleReasons, setPossibleReasons] = useState([]);
+  const { selectedTenantId } = useContext(UserContext);
 
   // When the drawer becomes visible and a finding is provided, fetch reference data.
   useEffect(() => {
@@ -67,8 +70,7 @@ function AlertUpdateDrawer({ visible, onClose, finding, onSuccess }) {
     try {
       setLoading(true);
       const requestBody = {
-        owner: finding.owner || 'siddharth-dhingra', // Use finding.owner if available.
-        repo: finding.repo || 'juice-shop',          // Use finding.repo if available.
+        tenantId: selectedTenantId,
         toolType: finding.toolType,                    // e.g. "CODESCAN", "DEPENDABOT", "SECRETSCAN".
         alertNumber: parseAlertNumber(finding),
         newState: newState.toLowerCase(),              // e.g. "open", "dismissed", "resolved".

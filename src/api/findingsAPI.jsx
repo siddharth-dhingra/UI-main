@@ -14,8 +14,9 @@ export async function fetchFilterData() {
   };
 }
 
-export async function fetchFindingsAPI({ page, size, selectedToolTypes, selectedSeverities, selectedStatuses }) {
+export async function fetchFindingsAPI({ tenantId, page, size, selectedToolTypes, selectedSeverities, selectedStatuses }) {
   const params = {
+    tenantId,
     page,
     size,
   };
@@ -33,30 +34,26 @@ export async function fetchFindingsAPI({ page, size, selectedToolTypes, selected
   return response.data || [];
 }
 
-export async function initiateScan({selectedTools}) {
+export async function initiateScan(tenantId, selectedTools) {
 
     const requestBody = {
-      owner: 'siddharth-dhingra',
-      repo: 'juice-shop',
       types: selectedTools.length > 0 ? selectedTools : ['ALL'],
     };
   
-    const response = await axios.post('http://localhost:8083/alert/scan', requestBody,{withCredentials: true,});
+    const response = await axios.post('http://localhost:8083/alert/scan', requestBody,{params: { tenantId }, withCredentials: true,});
 
     return response.data;
 }
 
-export async function updateAlert({ owner, repo, toolType, alertNumber, newState, reason }) {
+export async function updateAlert({ tenantId, toolType, alertNumber, newState, reason }) {
   const body = {
-    owner,
-    repo,
     toolType,
     alertNumber,
     newState,
     reason,
   };
 
-  const response = await axios.post('http://localhost:8083/alerts/update', body, {withCredentials: true,});
+  const response = await axios.post('http://localhost:8083/alerts/update', body, {params: { tenantId }, withCredentials: true,});
   console.log(body);
   return response.data;
 }

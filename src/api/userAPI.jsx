@@ -1,7 +1,12 @@
 import axios from 'axios';
 
-export async function fetchWhoAmI() {
+export async function fetchWhoAmI(tenantId) {
+  const params = {};
+  if (typeof tenantId === 'string') {
+    params.tenantId = tenantId;
+  }
   return axios.get('http://localhost:8083/whoami', {
+    params,
     withCredentials: true,
   });
 }

@@ -7,6 +7,7 @@ import FindingsPage from './pages/FindingsPage';
 import SettingsPage from './pages/SettingsPage';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './routes/ProtectedRoute';
+import ProfilePage from './pages/ProfilePage';
 
 const { Content } = Layout;
 
@@ -21,6 +22,7 @@ function MainLayout() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/findings" element={<FindingsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </Content>
       </Layout>
