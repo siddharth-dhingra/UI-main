@@ -34,6 +34,14 @@ export async function fetchFindingsAPI({ tenantId, page, size, selectedToolTypes
   return response.data || [];
 }
 
+export async function fetchSingleFinding(tenantId, findingId) {
+  const response = await axios.get('http://localhost:8083/alerts/finding/single', {
+    params: { tenantId, findingId },
+    withCredentials: true,
+  });
+  return response.data; // returns a Finding object
+}
+
 export async function initiateScan(tenantId, selectedTools) {
 
     const requestBody = {

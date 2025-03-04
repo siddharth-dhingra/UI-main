@@ -7,8 +7,8 @@ function ToolSelect({ selectedTool, onChange, toolTypes }) {
   return (
     <Row style={{ marginBottom: 16 }}>
       <Col>
-        <span style={{ marginRight: 8 }}>Select Tool:</span>
-        <Select value={selectedTool} onChange={onChange} style={{ width: 200 }}>
+        {/* <span style={{ marginRight: 8 }}>Select Tool:</span> */}
+        <Select value={selectedTool} onChange={onChange} style={{ width: 200, marginTop:"13px" }}>
           <Option value="ALL">ALL</Option>
           {toolTypes.map(tool => (
             <Option key={tool} value={tool}>{tool}</Option>

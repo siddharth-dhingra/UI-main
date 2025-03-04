@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Layout, Menu } from 'antd';
-import {
-  HomeOutlined,
-  FileSearchOutlined,
-  SettingOutlined,
-  ProfileOutlined,
-} from '@ant-design/icons';
+import { HomeOutlined, FileSearchOutlined, PartitionOutlined, ProfileOutlined, HddOutlined} from '@ant-design/icons';
+
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import armorcodeImg from '../../assets/armorcode_logo.png';
@@ -25,9 +21,9 @@ function Sidebar() {
       setSelectedKey(['1']);
     } else if (path.startsWith('/findings')) {
       setSelectedKey(['2']);
-    } else if (path.startsWith('/settings')) {
+    } else if (path.startsWith('/tickets')) {
       setSelectedKey(['3']);
-    } else if (path.startsWith('/profile')) {
+    } else if (path.startsWith('/runbooks')) {
       setSelectedKey(['4']);
     } else {
       setSelectedKey([]);
@@ -40,9 +36,9 @@ function Sidebar() {
     } else if (e.key === '2') {
       navigate('/findings');
     } else if (e.key === '3') {
-      navigate('/settings');
+      navigate('/tickets');
     } else if (e.key === '4') {
-      navigate('/profile');
+      navigate('/runbooks');
     }
   };
 
@@ -83,11 +79,11 @@ function Sidebar() {
         <Menu.Item key="2" icon={<FileSearchOutlined />}>
           Findings
         </Menu.Item>
-        <Menu.Item key="3" icon={<SettingOutlined />}>
-          Settings
+        <Menu.Item key="3" icon={<HddOutlined />}>
+          Tickets
         </Menu.Item>
-        <Menu.Item key="4" icon={<ProfileOutlined />}>
-          Profile
+        <Menu.Item key="4" icon={<PartitionOutlined />}>
+          Runbooks
         </Menu.Item>
       </Menu>
     </Sider>

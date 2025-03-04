@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import { fetchFilterData, initiateScan } from '../../api/findingsAPI';
 
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
+
 const { Header } = Layout;
 const { Option } = Select;
 
@@ -68,8 +70,12 @@ function AppHeader() {
         handleLogout();
       }
     }}>
-      <Menu.Item key="profile">View Profile</Menu.Item>
-      <Menu.Item key="logout">Logout</Menu.Item>
+      <Menu.Item key="profile" icon={<UserOutlined />}>
+      View Profile
+    </Menu.Item>
+    <Menu.Item key="logout" icon={<LogoutOutlined style={{ color: 'red' }} />} style={{ color: "red" }}>
+      Logout
+    </Menu.Item>
     </Menu>
   );
 

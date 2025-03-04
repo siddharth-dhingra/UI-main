@@ -4,10 +4,11 @@ import Sidebar from './components/FindingComponents/SideBar';
 import AppHeader from './components/FindingComponents/AppHeader'
 import DashboardPage from './pages/DashboardPage';
 import FindingsPage from './pages/FindingsPage';
-import SettingsPage from './pages/SettingsPage';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import ProfilePage from './pages/ProfilePage';
+import TicketsPage from './pages/TicketsPage';
+import RunbooksPage from './pages/RunbookPage';
 
 const { Content } = Layout;
 
@@ -21,8 +22,9 @@ function MainLayout() {
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/findings" element={<FindingsPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/tickets" element={<TicketsPage />} />
+            <Route path="/runbooks" element={<RunbooksPage />} />
           </Routes>
         </Content>
       </Layout>

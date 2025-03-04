@@ -9,7 +9,7 @@ function StateBarChart({ data, onBarClick }) {
         onClick={(e) => { if (e?.activePayload) onBarClick(e.activePayload[0].payload); }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="name" interval={0} />
         <YAxis allowDecimals={false} />
         <Tooltip />
         <Legend />

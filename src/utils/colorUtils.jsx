@@ -22,5 +22,19 @@ export function getColorForValue(type, value) {
   
     const fallbackColor = '#595959';
     return colorMaps[type]?.[value] || fallbackColor;
+}
+
+export function getColorForTicketStatus(status) {
+  if (!status) return '#1890FF'; // default blue
+
+  switch (status.toUpperCase()) {
+    case 'TO DO':
+      return '#FF4D4F'; // red
+    case 'IN PROGRESS':
+      return '#FAAD14'; // orange
+    case 'DONE':
+      return '#52C41A'; // green
+    default:
+      return '#1890FF'; // default blue for other statuses
   }
-  
+}
